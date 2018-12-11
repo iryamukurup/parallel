@@ -148,3 +148,5 @@ void Gradient(double position,unsigned char c[3])
     };
 
 };
+
+//https://stackoverflow.com/questions/13719965/mandelbrot-set-in-openmp
