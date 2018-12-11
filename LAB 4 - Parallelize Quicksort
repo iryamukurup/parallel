@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int pt(int *a,int j,int i)
+{
+    int gt;
+    int ht;
+    int h[i-j];
+    int g[i-j];
+    int x;
+    int y;
+    int c;
+    gt = 0;
+    ht = 0;
+    c = a[i];
+#pragma omp parallel
+    for(x = j; x < i; x++){
+        if(a[x] < a[i]){
+            h[ht++] = a[x];
+        }else{
+            g[gt++] = a[x];
+        }   
+    }   
+    for(x = 0; x < ht; x++){
+        a[j + x] = h[x];
+    }   
+    a[j + ht] = c;
+    for(y = 0; y < gt; y++){
+        a[j + ht + y + 1] = g[y];
+    }   
+    return j + ht;
+}
+void qsrt(int *a,int j,int i)
+{
+    int div;
+    if(j < i){ 
+        div = pt(a,j,i); 
+#pragma omp parallel
+        {   
+#pragma omp section
+            qsrt(a,j,div - 1); 
+#pragma omp section
+            qsrt(a,div + 1,i); 
+        }
+    }
+}
+int main(void)
+{
+    int z;
+    int a[10] = {7, 9, 0, 2, 5, 6, 3, 4, 1, 8};
+    qsrt(a,0,9);
+    for(z=0;z<10;z++){
+        printf("%d\n",a[z]);
+    }
+    return 0;
+}
