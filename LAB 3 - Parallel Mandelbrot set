@@ -3,7 +3,6 @@
 #include <math.h>
 #include <string.h>
 #include <omp.h>
-// #include "timer.h"
 
 void Gradient();
 
@@ -26,8 +25,6 @@ int main()
 
     FILE* fp;
 
-//     initialize_timer ( );
-//     start_timer ( );
 #pragma omp parallel shared(pixels)
     {
         int iY;
@@ -77,9 +74,6 @@ int main()
     fclose(fp);
     free(pixels);
 
-//     stop_timer ( );
-//
-//     printf("Elapsed time: %lf \n",elapsed_time ( ));
     return 0;
 }
 
